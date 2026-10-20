@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#234e42">
+    <meta name="description" content="Tu alimentación, más clara. Registra alimentos por gramos, conoce tus nutrientes y construye hábitos con GymTrack.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="GymTrack">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="./styles.css">
+    <title>GymTrack · Tu alimentación, más clara</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Ir al contenido</a>
+    <aside class="sidebar">
+      <a class="brand" href="#diary" aria-label="GymTrack inicio"><span class="brand-mark">g<span>t</span></span><span>gymtrack<span class="brand-dot">.</span></span></a>
+      <div class="sidebar-caption">TU ESPACIO PERSONAL</div>
+      <nav aria-label="Navegación principal" id="navigation">
+        <button class="nav-item active" data-view="diary" data-icon="grid">Mi día</button>
+        <button class="nav-item" data-view="history" data-icon="chart">Historial</button>
+        <button class="nav-item" data-view="foods" data-icon="leaf">Alimentos</button>
+        <button class="nav-item" data-view="goals" data-icon="target">Mi objetivo</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="little-note"><span class="little-leaf" aria-hidden="true">✳</span><strong>Un día a la vez.</strong><p>Cada registro te ayuda a conocer mejor tus hábitos.</p></div>
+        <button class="help-button" data-action="help" data-icon="help">Cómo funciona</button>
+        <div class="storage-badge"><i></i> Guardado en este dispositivo</div>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <span class="breadcrumb">Mi alimentación <span>/</span> <strong id="view-title">Mi día</strong></span>
+        <div class="topbar-right"><span class="mexico-tag">HECHO PARA TU DÍA A DÍA</span><button class="avatar" data-action="profile" aria-label="Configurar mi perfil">T</button></div>
+      </header>
+      <main id="main" tabindex="-1"></main>
+      <footer class="page-footer"><span>gymtrack<span class="brand-dot">.</span></span> Una visión más clara de tu alimentación.</footer>
+    </div>
+    <dialog id="modal" aria-labelledby="modal-title"></dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <noscript>Activa JavaScript para registrar tus alimentos en GymTrack.</noscript>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
