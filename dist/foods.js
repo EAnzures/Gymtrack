@@ -560,6 +560,74 @@ export const FOODS = [
     }
   },
   {
+    "id": "palomitas-sin-aceite",
+    "name": "Palomitas de maíz sin aceite",
+    "category": "Cereales",
+    "preparation": "Hechas con aire caliente, sin sal ni aceite; pesar ya reventadas",
+    "emoji": "🍿",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "19806",
+      "description": "Snacks, popcorn, air-popped (Unsalted)"
+    },
+    "smaeGroup": "Cereales y tubérculos sin grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 382.0,
+      "protein": 12.0,
+      "carbs": 77.9,
+      "fat": 4.2,
+      "fiber": 15.1,
+      "calcium": 10.0,
+      "iron": 2.66,
+      "magnesium": 131.0,
+      "potassium": 301.0,
+      "sodium": 4.0,
+      "zinc": 3.44,
+      "vitaminA": 1.0,
+      "vitaminC": 0.0,
+      "vitaminD": null,
+      "vitaminB12": 0.0,
+      "folate": 23.0
+    }
+  },
+  {
+    "id": "palomitas-con-aceite",
+    "name": "Palomitas de maíz con aceite",
+    "category": "Cereales",
+    "preparation": "Caseras, sin sal; pesar ya reventadas. El aceite de preparación ya está incluido",
+    "emoji": "🍿",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "42259",
+      "description": "Snacks, popcorn, home-prepared, oil-popped, unsalted"
+    },
+    "smaeGroup": "Cereales y tubérculos con grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 500.0,
+      "protein": 9.0,
+      "carbs": 58.1,
+      "fat": 28.1,
+      "fiber": 10.0,
+      "calcium": 10.0,
+      "iron": 2.78,
+      "magnesium": 108.0,
+      "potassium": 225.0,
+      "sodium": 3.0,
+      "zinc": 2.64,
+      "vitaminA": 8.0,
+      "vitaminC": 0.3,
+      "vitaminD": 0.0,
+      "vitaminB12": 0.0,
+      "folate": 17.0
+    }
+  },
+  {
     "id": "frijol-negro",
     "name": "Frijol negro cocido",
     "category": "Leguminosas",
@@ -794,6 +862,108 @@ export const FOODS = [
       "vitaminC": 0.0,
       "vitaminD": 0.1,
       "vitaminB12": 0.34,
+      "folate": 4.0
+    }
+  },
+  {
+    "id": "pierna-pollo-cruda-sin-piel",
+    "name": "Pierna de pollo cruda sin piel",
+    "category": "Proteínas",
+    "preparation": "Pesar sólo carne, sin hueso ni piel, antes de cocinar; no incluye el muslo",
+    "emoji": "🍗",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "05071",
+      "description": "Chicken, broilers or fryers, dark meat, drumstick, meat only, raw"
+    },
+    "smaeGroup": "Alimentos de origen animal: bajo aporte de grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 116.0,
+      "protein": 19.41,
+      "carbs": 0.0,
+      "fat": 3.71,
+      "fiber": 0.0,
+      "calcium": 9.0,
+      "iron": 0.76,
+      "magnesium": 20.0,
+      "potassium": 225.0,
+      "sodium": 114.0,
+      "zinc": 2.05,
+      "vitaminA": 7.0,
+      "vitaminC": 0.0,
+      "vitaminD": 0.0,
+      "vitaminB12": 0.51,
+      "folate": 4.0
+    }
+  },
+  {
+    "id": "pierna-pollo-asada-sin-piel",
+    "name": "Pierna de pollo asada sin piel",
+    "category": "Proteínas",
+    "preparation": "Pesar sólo carne ya cocida, sin hueso ni piel; no incluye el muslo",
+    "emoji": "🍗",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "05073",
+      "description": "Chicken, broilers or fryers, dark meat, drumstick, meat only, cooked, roasted"
+    },
+    "smaeGroup": "Alimentos de origen animal: bajo aporte de grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 155.0,
+      "protein": 24.24,
+      "carbs": 0.0,
+      "fat": 5.7,
+      "fiber": 0.0,
+      "calcium": 11.0,
+      "iron": 1.14,
+      "magnesium": 22.0,
+      "potassium": 256.0,
+      "sodium": 128.0,
+      "zinc": 2.56,
+      "vitaminA": 6.0,
+      "vitaminC": 0.0,
+      "vitaminD": 0.0,
+      "vitaminB12": 0.38,
+      "folate": 4.0
+    }
+  },
+  {
+    "id": "pierna-pollo-asada-con-piel",
+    "name": "Pierna de pollo asada con piel",
+    "category": "Proteínas",
+    "preparation": "Pesar carne y piel ya cocidas, sin hueso; no incluye el muslo",
+    "emoji": "🍗",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "05069",
+      "description": "Chicken, broilers or fryers, drumstick, meat and skin, cooked, roasted"
+    },
+    "smaeGroup": "Alimentos de origen animal: moderado aporte de grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 191.0,
+      "protein": 23.35,
+      "carbs": 0.0,
+      "fat": 10.15,
+      "fiber": 0.0,
+      "calcium": 11.0,
+      "iron": 1.11,
+      "magnesium": 22.0,
+      "potassium": 247.0,
+      "sodium": 123.0,
+      "zinc": 2.36,
+      "vitaminA": 12.0,
+      "vitaminC": 0.0,
+      "vitaminD": 0.1,
+      "vitaminB12": 0.39,
       "folate": 4.0
     }
   },

@@ -66,6 +66,38 @@ test('missing catalog nutrients remain unknown, including alongside a reported z
   assert.equal(scaleFood(avocado, 20).vitaminD, 0);
 });
 
+test('popcorn and drumsticks preserve source preparations and edible gram calculations', () => {
+  const air = byId('palomitas-sin-aceite');
+  const oil = byId('palomitas-con-aceite');
+  const raw = byId('pierna-pollo-cruda-sin-piel');
+  const skinless = byId('pierna-pollo-asada-sin-piel');
+  const withSkin = byId('pierna-pollo-asada-con-piel');
+  for (const [food, code, description, expected] of [
+    [air, '19806', 'Snacks, popcorn, air-popped (Unsalted)', [382, 12, 77.9, 4.2]],
+    [oil, '42259', 'Snacks, popcorn, home-prepared, oil-popped, unsalted', [500, 9, 58.1, 28.1]],
+    [raw, '05071', 'Chicken, broilers or fryers, dark meat, drumstick, meat only, raw', [116, 19.41, 0, 3.71]],
+    [skinless, '05073', 'Chicken, broilers or fryers, dark meat, drumstick, meat only, cooked, roasted', [155, 24.24, 0, 5.7]],
+    [withSkin, '05069', 'Chicken, broilers or fryers, drumstick, meat and skin, cooked, roasted', [191, 23.35, 0, 10.15]],
+  ]) {
+    assert.equal(food.source.code, code);
+    assert.equal(food.source.description, description);
+    assert.deepEqual(['kcal', 'protein', 'carbs', 'fat'].map(key => food.per100[key]), expected);
+    assert.equal(food.equivalentGrams, null);
+  }
+  for (const food of [raw, skinless, withSkin]) assert.match(food.preparation, /sin hueso/);
+  for (const food of [air, oil]) assert.match(food.preparation, /ya reventadas/);
+  assert.match(oil.preparation, /aceite.*ya está incluido/);
+  assert.equal(air.per100.vitaminD, null, 'USDA does not report vitamin D for unsalted air-popped popcorn');
+  assert.equal(oil.per100.vitaminD, 0, 'An explicit reported zero remains distinct');
+  // USDA rows 19806 and 05073 at 30 g prepared popcorn + 150 g edible cooked meat.
+  const result = sumEntries([{ food: air, grams: 30 }, { food: skinless, grams: 150 }]);
+  for (const [key, expected] of Object.entries({
+    kcal: 347.1, protein: 39.96, carbs: 23.37, fat: 9.81,
+    fiber: 4.53, iron: 2.508, zinc: 4.872, sodium: 193.2,
+  })) close(result.totals[key], expected, key);
+  assert.equal(result.coverage.vitaminD, 0.5);
+});
+
 test('catalog and domain share nutrient units, including RAE, DFE and micrograms', () => {
   assert.deepEqual(Object.keys(NUTRIENT_UNITS).sort(), Object.keys(NUTRIENTS).sort());
   for (const [key, definition] of Object.entries(NUTRIENTS)) {

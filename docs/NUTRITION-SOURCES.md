@@ -2,7 +2,7 @@
 
 ## Composición del catálogo
 
-El catálogo inicial tiene 60 alimentos comunes en México. Los valores por 100 g
+El catálogo tiene 65 alimentos comunes en México. Los valores por 100 g
 proceden de **USDA National Nutrient Database for Standard Reference, Legacy
 (2018)**, no de cálculos aproximados escritos a mano ni de una reproducción
 comercial del SMAE.
@@ -36,8 +36,30 @@ revisar explícitamente la selección y las pruebas antes de actualizar el hash.
 
 Los valores son para **peso neto comestible**. Hay entradas separadas para salmón
 crudo y cocido, avena seca y cocida y nopal crudo y cocido. No se transforma peso
-crudo a cocido automáticamente. Aceite, sal, salsas y otros ingredientes añadidos
-se registran aparte.
+crudo a cocido automáticamente. Aceite, sal, salsas y otros ingredientes adicionales
+se registran aparte cuando no están incluidos en la preparación de la ficha.
+
+### Palomitas de maíz y piernas de pollo
+
+| Alimento en la app | NDB | Descripción original USDA |
+| --- | --- | --- |
+| Palomitas de maíz sin aceite | 19806 | Snacks, popcorn, air-popped (Unsalted) |
+| Palomitas de maíz con aceite | 42259 | Snacks, popcorn, home-prepared, oil-popped, unsalted |
+| Pierna de pollo cruda sin piel | 05071 | Chicken, broilers or fryers, dark meat, drumstick, meat only, raw |
+| Pierna de pollo asada sin piel | 05073 | Chicken, broilers or fryers, dark meat, drumstick, meat only, cooked, roasted |
+| Pierna de pollo asada con piel | 05069 | Chicken, broilers or fryers, drumstick, meat and skin, cooked, roasted |
+
+Las palomitas se pesan **ya reventadas**, no como granos secos. Ambas referencias
+son sin sal añadida. La preparación con aceite ya incluye su aporte: no debe
+duplicarse registrándolo otra vez. Una receta casera, palomitas de cine, de
+microondas, con mantequilla o caramelizadas pueden tener otra composición.
+El registro 19806 no informa vitamina D; se conserva como `null`.
+
+La **pierna** corresponde a `drumstick`, la parte inferior, no al conjunto
+pierna y muslo. Se pesa sólo la parte comestible, **sin hueso**, y la piel sólo
+cuando se selecciona la variante con piel. La preparación cruda se usa para
+peso antes de cocinar; las asadas, para peso después de cocinar. No se incluyen
+empanizado, salsa ni otros ingredientes adicionales.
 
 Las referencias estadounidenses no describen necesariamente una marca o receta
 mexicana. Tortillas, panes y quesos pueden variar en agua, grasa, sodio, calcio

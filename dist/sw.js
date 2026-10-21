@@ -1,6 +1,6 @@
 /* Bump the version when releasing an updated app shell. */
 const CACHE_PREFIX = `gymtrack-shell:${self.registration.scope}:`;
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const SHELL = [
   './', './index.html', './styles.css', './app.js', './nutrition.js',
   './storage.js', './foods.js', './manifest.webmanifest',

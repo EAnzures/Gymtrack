@@ -20,7 +20,23 @@ Los archivos de producción están en `dist/`; no hay compilación. El servidor 
 
 ## Instalar en iPhone
 
-Publica `dist/` en un alojamiento HTTPS, abre su dirección en Safari y elige **Compartir → Agregar a pantalla de inicio**. Abre la aplicación desde el icono y carga una vez con internet. Los recursos se guardan para uso sin conexión cuando las políticas del alojamiento lo permiten. La instalación real se debe comprobar en un iPhone; las pruebas de escritorio con tamaño móvil no sustituyen ese paso.
+La aplicación ya está publicada en [GymTrack](https://gymtrack-nutricion-mx.agilegrebe513.chatgpt.site). Para instalar esta versión:
+
+1. Abre ese enlace en **Safari en tu iPhone**. Si solicita acceso, inicia sesión con la cuenta autorizada para el sitio privado.
+2. Toca **Compartir** (el cuadro con la flecha hacia arriba). Según el diseño de Safari, puede estar dentro de **Más**.
+3. Selecciona **Agregar a Inicio** o **Agregar a pantalla de inicio**. Si no aparece, revisa **Editar acciones** en el menú de compartir.
+4. Si aparece **Abrir como app web**, déjalo activado y toca **Agregar**.
+5. Abre **GymTrack** desde su icono en la pantalla de inicio y carga una vez con internet.
+
+Así se instala la aplicación web (PWA) con su propio icono. No se descarga de App Store ni genera un archivo `.ipa`. [Instrucciones oficiales de Apple](https://support.apple.com/es-lamr/guide/iphone/iphea86e5236/ios).
+
+Los recursos se guardan para uso sin conexión cuando las políticas del alojamiento lo permiten. Para recibir una actualización, abre con internet, cierra todas las ventanas de GymTrack (incluidas las pestañas de Safari) y vuelve a abrirla. No hace falta borrar los datos del navegador. La instalación real se debe comprobar en un iPhone; las pruebas de escritorio con tamaño móvil no sustituyen ese paso.
+
+Si ya registraste alimentos en la computadora, usa **Mi objetivo → Exportar respaldo** y luego **Importar respaldo** en el teléfono: los dispositivos no se sincronizan automáticamente.
+
+### Descarga mediante TestFlight o App Store
+
+Eso requiere una versión iOS compilada y firmada con las credenciales del propietario. El proyecto actual todavía no contiene ese paquete. Para distribuirla mediante TestFlight o App Store se necesita pertenecer al **Apple Developer Program**, configurar la app en App Store Connect y subir una compilación iOS; el código web existente puede aprovecharse al preparar ese proyecto. [Distribución oficial de Apple](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases).
 
 El proyecto de Sites registrado se conserva en `.openai/hosting.json`. Su configuración inicial es privada; un enlace publicado puede requerir iniciar sesión con la cuenta autorizada. No se publican diarios personales: éstos sólo existen en el navegador de quien usa la app.
 
@@ -28,7 +44,7 @@ El proyecto de Sites registrado se conserva en `.openai/hosting.json`. Su config
 
 - Perfil con mantenimiento estimado, déficit moderado o superávit moderado; reparto inicial de macronutrientes y referencias de fibra, vitaminas y minerales.
 - Comidas con nombre libre, cantidades en gramos, edición, eliminación, fechas e historial.
-- Catálogo inicial de 60 alimentos, búsqueda sin acentos, categorías, favoritos y ficha nutricional con procedencia.
+- Catálogo de 65 alimentos, incluidas palomitas de maíz sin aceite o con aceite y piernas de pollo con distintas preparaciones; búsqueda sin acentos, categorías, favoritos y ficha nutricional con procedencia.
 - Alimentos personalizados desde etiquetas por 100 g. Los nutrientes desconocidos permanecen sin dato.
 - Total diario de energía, proteína, carbohidratos, grasa y otros 12 nutrientes. El sodio se muestra como límite, nunca como cantidad que falta consumir.
 - Meta gradual de pasos y registro manual, sin descontar calorías por actividad.
