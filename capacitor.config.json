@@ -1,0 +1,9 @@
+{
+  "appId": "mx.gymtrack.nutricion",
+  "appName": "GymTrack",
+  "webDir": "build/native-web",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#f6f7f3"
+  }
+}

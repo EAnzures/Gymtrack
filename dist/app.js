@@ -2,6 +2,9 @@ import { FOODS, SMAE_GROUPS, CATALOG_METADATA } from './foods.js';
 import { NUTRIENTS, MICRO_REFERENCES, calculateTargets, scaleFood, sumEntries, localDate } from './nutrition.js';
 import { STORAGE_KEY, MAX_BACKUP_BYTES, emptyState, loadState, saveState, parseBackup, exportBackup } from './storage.js';
 
+const isNativeApp = Boolean(globalThis.GymTrackNative);
+let exportingBackup = false;
+
 const paths = {
   grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   chart:'<path d="M4 3v17h17M8 15v-4m5 4V7m5 8v-5"/>',
@@ -146,7 +149,7 @@ function renderGoals() {
   const t=target(), p=state.profile;
   return `<section class="hero"><div><div class="eyebrow">UN PUNTO DE PARTIDA PERSONAL</div><h1>Tu objetivo. <em>Tu ritmo.</em></h1><p class="subtext">Una estimación que puedes revisar a medida que cambian tus hábitos.</p></div>${button('profile',p?'Editar mi perfil':'Crear mi perfil','edit')}</section>${goalBanner(t)}
     ${p?`<div class="goal-grid"><section class="card"><div class="card-header"><h2>${esc(goals[p.goal])}</h2><span class="pill">REFERENCIA ACTUAL</span></div><p class="goal-summary-big">${fmt(t.kcal)} <small>kcal / día</small></p><p class="subtext">${t.eligible?'Una distribución inicial de 20% proteína, 50% carbohidratos y 30% grasa.':'Los objetivos automáticos no están disponibles para este perfil.'}</p><div class="goal-details">${macroKeys.map(key=>`<div><dt>${NUTRIENTS[key].label}</dt><dd>${fmt(t[key])} g</dd></div>`).join('')}<div><dt>Meta gradual de pasos</dt><dd>${fmt(t.steps)}</dd></div></div><div class="goal-flow"><span>Reposo estimado<strong>${fmt(t.bmr)} kcal</strong></span>${icon('chevron')}<span>Mantenimiento<strong>${fmt(t.maintenance)} kcal</strong></span>${icon('chevron')}<span>Ajuste<strong>${t.adjustment>0?'+':''}${fmt(t.adjustment)} kcal</strong></span></div><p class="field-hint" style="margin-top:14px">Mifflin–St Jeor × actividad aproximada. El objetivo actual también se muestra al consultar días anteriores.</p></section><section class="card"><h2>Tu perfil</h2><dl class="goal-details"><div><dt>Nombre</dt><dd>${esc(p.name||'Sin nombre')}</dd></div><div><dt>Edad</dt><dd>${p.age} años</dd></div><div><dt>Peso</dt><dd>${fmt(p.weight,1)} kg</dd></div><div><dt>Estatura</dt><dd>${fmt(p.height)} cm</dd></div></dl><p class="subtext">${esc(activityNames[p.activity]||'Actividad personalizada')} · factor ${p.activity}</p><p class="subtext">${fmt(p.baselineSteps)} pasos habituales por día</p><div class="info-box">El mantenimiento real cambia entre personas. Revisa tendencias durante varias semanas y ajusta con un profesional si lo necesitas.</div>${button('sources','Cómo calculamos las referencias','','text')}</section></div>`:''}
-    <section class="card" style="margin-top:24px"><h2>Tus datos, contigo</h2><p class="subtext">Los registros se guardan en este navegador. Un respaldo te permite recuperarlos o llevarlos a otro dispositivo.</p><div class="backup-actions">${button('export','Exportar respaldo','download','secondary')}${button('import','Importar respaldo','','secondary')}${button('help','Instalar en iPhone','','soft')}</div><p class="field-hint">No hay cuenta ni sincronización automática. Borrar los datos del navegador elimina los registros locales.</p></section>`;
+    <section class="card" style="margin-top:24px"><h2>Tus datos, contigo</h2><p class="subtext">Los registros se guardan en ${isNativeApp?'esta aplicación':'este navegador'}. Un respaldo te permite recuperarlos o llevarlos a otro dispositivo.</p><div class="backup-actions">${button('export','Exportar respaldo','download','secondary')}${button('import','Importar respaldo','','secondary')}${button('help',isNativeApp?'Sobre la app':'Instalar en iPhone','','soft')}</div><p class="field-hint">No hay cuenta ni sincronización automática. ${isNativeApp?'Desinstalar la app':'Borrar los datos del navegador'} elimina los registros locales.</p></section>`;
 }
 function openProfile() {
   const p=state.profile||{name:'',sex:'',age:'',weight:'',height:'',activity:1.2,goal:'maintain',baselineSteps:3000,specialCondition:false};
@@ -208,15 +211,33 @@ function openSources() {
 function openHelp() {
   modalOpen('Tu alimentación, más clara','Una guía breve para empezar con GymTrack.',`<div class="prose">
     <h3>De tu comida a tu diario</h3><ol><li>Configura tus datos en <strong>Mi objetivo</strong>.</li><li>Crea una comida, busca cada alimento y escribe sus gramos.</li><li>Revisa calorías, macros y micronutrientes. Puedes editar cantidades y consultar días anteriores.</li></ol>
-    <h3>Instalar en iPhone</h3><ol><li>Abre la dirección publicada de GymTrack en <strong>Safari</strong>. Si solicita acceso, usa la cuenta autorizada para este sitio privado.</li><li>Toca <strong>Compartir → Agregar a Inicio</strong> (también puede decir «Agregar a pantalla de inicio»). Si no aparece, revisa «Editar acciones».</li><li>Si aparece <strong>Abrir como app web</strong>, déjalo activado y toca <strong>Agregar</strong>.</li><li>Abre GymTrack desde su icono y carga una vez con internet.</li></ol>
+    ${isNativeApp?`<h3>GymTrack en tu iPhone</h3><p>El catálogo y el diario están incluidos en la aplicación: puedes registrar comidas sin conexión desde el primer inicio.</p><p>Para exportar un respaldo, elige <strong>Guardar en Archivos</strong> en el menú de compartir. Para traer registros de Safari u otro dispositivo, utiliza <strong>Importar respaldo</strong>.</p><p>Las actualizaciones del sitio web no actualizan esta app. Instala la nueva versión con AltStore usando la misma cuenta y conserva un respaldo antes de actualizar. Renueva la firma desde AltStore cuando sea necesario.</p>`:`<h3>Instalar en iPhone</h3><ol><li>Abre la dirección publicada de GymTrack en <strong>Safari</strong>. Si solicita acceso, usa la cuenta autorizada para este sitio privado.</li><li>Toca <strong>Compartir → Agregar a Inicio</strong> (también puede decir «Agregar a pantalla de inicio»). Si no aparece, revisa «Editar acciones».</li><li>Si aparece <strong>Abrir como app web</strong>, déjalo activado y toca <strong>Agregar</strong>.</li><li>Abre GymTrack desde su icono y carga una vez con internet.</li></ol>
     <p>Esta versión se instala como aplicación web, con su propio icono. Todavía no está disponible para descargar en App Store o TestFlight. <a href="https://support.apple.com/es-lamr/guide/iphone/iphea86e5236/ios" target="_blank" rel="noopener noreferrer">Guía de Apple</a>.</p>
     <p>${esc(swStatus)}. La disponibilidad sin conexión también depende de las políticas del alojamiento y de que el navegador conserve el almacenamiento.</p>
     <p>Para recibir actualizaciones, abre con internet, cierra todas las ventanas de GymTrack (incluidas las pestañas de Safari) y vuelve a abrirla. No necesitas borrar tus registros. La dirección localhost sólo funciona en la computadora donde corre el servidor.</p>
-    ${deferredInstall?button('install','Instalar GymTrack','','secondary'):''}
-    <h3>Datos y respaldos</h3><p>Los datos se guardan en este navegador y dispositivo. No se envían a un servidor de nutrición y no hay sincronización automática con iCloud ni Salud de Apple. Para llevar tus registros de la computadora al teléfono, exporta el respaldo aquí e impórtalo en el teléfono. Conserva una copia antes de borrar datos del navegador.</p>
+    ${deferredInstall?button('install','Instalar GymTrack','','secondary'):''}`}
+    <h3>Datos y respaldos</h3><p>Los datos se guardan en ${isNativeApp?'esta aplicación':'este navegador'} y dispositivo. No se envían a un servidor de nutrición y no hay sincronización automática con iCloud ni Salud de Apple. Para llevar tus registros de la computadora al teléfono, exporta el respaldo aquí e impórtalo en el teléfono. Conserva una copia antes de ${isNativeApp?'desinstalar la app':'borrar datos del navegador'}.</p>
     </div><div class="backup-actions">${button('export','Exportar respaldo','download','secondary')}${button('import','Importar respaldo','','secondary')}</div>${storageError?`<div class="error-message">${esc(storageError)}</div>${button('export-raw','Descargar datos originales','','secondary')}`:''}<p id="form-error" class="error-message" role="alert"></p><div class="modal-actions">${button('sources','Fuentes y metodología','','secondary')}${button('close','Listo')}</div>`);
 }
-function download(text,name) { const url=URL.createObjectURL(new Blob([text],{type:'application/json;charset=utf-8'})); const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000); }
+async function download(text,name) {
+  if(isNativeApp) return globalThis.GymTrackNative.exportBackup(text,name);
+  const url=URL.createObjectURL(new Blob([text],{type:'application/json;charset=utf-8'}));
+  const a=document.createElement('a');a.href=url;a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+  return 'downloaded';
+}
+async function saveBackup(original = false) {
+  if(exportingBackup) return;
+  exportingBackup=true;
+  try {
+    if(!original&&storageError)throw new Error('Descarga los datos originales desde «Cómo funciona».');
+    const text=original?localStorage.getItem(STORAGE_KEY):exportBackup(state);
+    if(text===null)throw new Error('No hay datos locales para descargar.');
+    const result=await download(text,`gymtrack-${original?'recuperacion':'respaldo'}-${localDate()}.json`);
+    toast(result==='cancelled'?'Exportación cancelada. Tus registros siguen guardados.':isNativeApp?'Respaldo compartido.':'Respaldo preparado para descargar.');
+  } catch(error) { showError(error.message); }
+  finally { exportingBackup=false; }
+}
 function importFile() {
   const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
   input.addEventListener('change',async()=>{
@@ -238,7 +259,7 @@ function applyExample() {
     d.meals.push({id:uid('meal'),name:'Comida de ejemplo',entries:[['tortilla-maiz',150],['aguacate',20],['salmon-cocido',100],['manzana',60]].map(([id,grams])=>({id:uid('entry'),food:clone(FOODS.find(f=>f.id===id)),grams}))});
   },'Añadimos tu ejemplo. Puedes editarlo o eliminarlo.'))modal.close();
 }
-document.addEventListener('click',event=>{
+document.addEventListener('click',async event=>{
   const nav=event.target.closest('[data-view]');
   if(nav){view=nav.dataset.view;search='';filter='Todos';mealForAdd=null;render();window.scrollTo({top:0});return;}
   if(event.target.closest('.brand')){view='diary';render();return;}
@@ -272,8 +293,8 @@ document.addEventListener('click',event=>{
     case 'confirm-example':applyExample();break;
     case 'filter':filter=btn.dataset.filter;if($('#food-results')){$('#food-results').innerHTML=foodSearchResults();$('#food-chips').innerHTML=chips();}else{$('#catalog-results').innerHTML=catalogResults();$('#catalog-chips').innerHTML=chips();}break;
     case 'favorite':persist(next=>{next.favorites=next.favorites.includes(foodId)?next.favorites.filter(id=>id!==foodId):[...next.favorites,foodId];});if($('#food-results'))$('#food-results').innerHTML=foodSearchResults();break;
-    case 'export':try{if(storageError)throw new Error('Descarga los datos originales desde «Cómo funciona».');download(exportBackup(state),`gymtrack-respaldo-${localDate()}.json`);toast('Respaldo preparado para descargar.');}catch(error){showError(error.message);}break;
-    case 'export-raw':try{const raw=localStorage.getItem(STORAGE_KEY);if(raw===null)throw new Error('No hay datos locales para descargar.');download(raw,`gymtrack-recuperacion-${localDate()}.json`);}catch(error){showError(error.message);}break;
+    case 'export':await saveBackup();break;
+    case 'export-raw':await saveBackup(true);break;
     case 'import':importFile();break;
     case 'confirm-import':if(pendingImport&&persist(next=>{Object.assign(next,clone(pendingImport));},'Respaldo importado.',true)){pendingImport=null;modal.close();}break;
     case 'install':if(deferredInstall){deferredInstall.prompt();deferredInstall=null;}break;
@@ -321,7 +342,7 @@ window.addEventListener('storage',event=>{if(event.key===STORAGE_KEY){try{state=
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstall=event;});
 document.querySelectorAll('[data-icon]').forEach(el=>el.insertAdjacentHTML('afterbegin',icon(el.dataset.icon)));
 render();
-if('serviceWorker' in navigator && window.isSecureContext){
+if(!isNativeApp && 'serviceWorker' in navigator && window.isSecureContext){
   navigator.serviceWorker.register('./sw.js').then(registration=>{
     const setReady=()=>{swStatus='La aplicación está preparada para abrirse sin conexión en este navegador';};
     if(registration.active)setReady();

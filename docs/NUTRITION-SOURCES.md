@@ -2,7 +2,7 @@
 
 ## Composición del catálogo
 
-El catálogo tiene 65 alimentos comunes en México. Los valores por 100 g
+El catálogo tiene 66 alimentos comunes en México. Los valores de referencia por 100 g
 proceden de **USDA National Nutrient Database for Standard Reference, Legacy
 (2018)**, no de cálculos aproximados escritos a mano ni de una reproducción
 comercial del SMAE.
@@ -60,6 +60,29 @@ pierna y muslo. Se pesa sólo la parte comestible, **sin hueso**, y la piel sól
 cuando se selecciona la variante con piel. La preparación cruda se usa para
 peso antes de cocinar; las asadas, para peso después de cocinar. No se incluyen
 empanizado, salsa ni otros ingredientes adicionales.
+
+### Torta de agua sin relleno, con todo el migajón
+
+`torta-agua` representa **sólo el pan horneado**, con su corteza y todo el
+migajón: no una torta preparada con alimentos dentro ni pan con la miga retirada.
+Se registra el peso real del pan consumido en gramos; no se asigna un peso fijo
+por pieza ni se descuenta migajón.
+
+No se encontró una composición primaria específica de la receta regional que
+pudiera incorporarse con todos los nutrientes del catálogo. Se utiliza como
+**estimación** el registro USDA NDB **18029**, `Bread, french or vienna (includes
+sourdough)`, el mismo de `pan-frances`: 272 kcal, 10.75 g de proteína, 51.88 g de
+carbohidratos y 2.42 g de grasa por 100 g. Los micronutrientes también pertenecen
+a esa referencia y no son mediciones de una torta de agua poblana.
+
+[Slow Food describe la torta de agua poblana](https://www.slowfood.com/es/blog-and-news/torta-de-agua-pieza-modesta-y-maestra-de-la-panaderia-poblana/)
+como un pan blanco de corteza crujiente, elaborado con trigo y malta, agua,
+levadura, sal y algo de azúcar. Esa descripción sustenta la selección editorial
+de un pan blanco tipo francés como aproximación; **no demuestra igualdad de
+composición**. La ficha indica la estimación y la variación por receta y
+fortificación. No se atribuyen estos valores al SMAE ni se crea una porción
+equivalente en gramos. Si se dispone de etiqueta o análisis de la panadería,
+se debe preferir esa información mediante un alimento personalizado.
 
 Las referencias estadounidenses no describen necesariamente una marca o receta
 mexicana. Tortillas, panes y quesos pueden variar en agua, grasa, sodio, calcio

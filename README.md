@@ -1,10 +1,18 @@
 # GymTrack · Nutrición
 
-Primera versión funcional como aplicación web instalable (PWA), en español para usuarios mexicanos. Funciona en iPhone desde Safari, Android y escritorio. No necesita backend ni claves de API.
+Aplicación de nutrición en español para usuarios mexicanos. Incluye una versión web instalable (PWA) para Safari, Android y escritorio, y un proyecto iOS con Capacitor para instalar mediante AltStore Classic. No necesita backend ni claves de API.
+
+## Descargar como aplicación para iPhone
+
+El proyecto iOS incluye el diario y el catálogo localmente. Para obtener el archivo instalable, abre [GitHub Actions de EAnzures/Gymtrack](https://github.com/EAnzures/Gymtrack/actions/workflows/ios-ipa.yml), ejecuta **Run workflow** y, cuando termine correctamente, descarga el artefacto **GymTrack-iOS-AltStore**. Extrae el ZIP y guarda **GymTrack.ipa**.
+
+Instálalo desde **AltStore Classic → My Apps → +** con AltServer disponible en tu computadora. El IPA se compila sin firma y AltStore lo firma con tu cuenta de Apple. Descargarlo desde Safari por sí solo no lo instala. Con una cuenta gratuita debes renovar la firma cada 7 días. [Guía completa de compilación e instalación](docs/IOS-INSTALL.md).
+
+La app iOS requiere iOS 15 o posterior. Sus registros son independientes de Safari: usa **Exportar respaldo** e **Importar respaldo** para pasarlos. La exportación nativa abre el menú de compartir de iOS para elegir **Guardar en Archivos**. Las actualizaciones del sitio no actualizan el IPA automáticamente.
 
 ## Ejecutar en esta computadora
 
-Requiere Node.js 20 o posterior. Desde esta carpeta:
+Requiere Node.js 22 o posterior. Desde esta carpeta:
 
 ```powershell
 npm start
@@ -16,9 +24,9 @@ Abre `http://localhost:4173`. En este equipo, si Node no está en el PATH:
 & 'C:\Program Files\nodejs\node.exe' scripts/serve.mjs
 ```
 
-Los archivos de producción están en `dist/`; no hay compilación. El servidor local sólo expone esa carpeta y escucha en localhost. No uses esa dirección como enlace para el iPhone: localhost en el teléfono es el propio teléfono.
+Los archivos web están en `dist/` y se sirven directamente. El servidor local sólo expone esa carpeta y escucha en localhost. No uses esa dirección como enlace para el iPhone: localhost en el teléfono es el propio teléfono.
 
-## Instalar en iPhone
+## Instalar la versión web desde Safari
 
 La aplicación ya está publicada en [GymTrack](https://gymtrack-nutricion-mx.agilegrebe513.chatgpt.site). Para instalar esta versión:
 
@@ -36,7 +44,7 @@ Si ya registraste alimentos en la computadora, usa **Mi objetivo → Exportar re
 
 ### Descarga mediante TestFlight o App Store
 
-Eso requiere una versión iOS compilada y firmada con las credenciales del propietario. El proyecto actual todavía no contiene ese paquete. Para distribuirla mediante TestFlight o App Store se necesita pertenecer al **Apple Developer Program**, configurar la app en App Store Connect y subir una compilación iOS; el código web existente puede aprovecharse al preparar ese proyecto. [Distribución oficial de Apple](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases).
+Para distribuirla mediante TestFlight o App Store se necesita pertenecer al **Apple Developer Program**, configurar la app en App Store Connect y firmar/subir la compilación iOS. El flujo incluido genera un IPA para AltStore, sin publicación en esas tiendas. [Distribución oficial de Apple](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases).
 
 El proyecto de Sites registrado se conserva en `.openai/hosting.json`. Su configuración inicial es privada; un enlace publicado puede requerir iniciar sesión con la cuenta autorizada. No se publican diarios personales: éstos sólo existen en el navegador de quien usa la app.
 
@@ -44,7 +52,7 @@ El proyecto de Sites registrado se conserva en `.openai/hosting.json`. Su config
 
 - Perfil con mantenimiento estimado, déficit moderado o superávit moderado; reparto inicial de macronutrientes y referencias de fibra, vitaminas y minerales.
 - Comidas con nombre libre, cantidades en gramos, edición, eliminación, fechas e historial.
-- Catálogo de 65 alimentos, incluidas palomitas de maíz sin aceite o con aceite y piernas de pollo con distintas preparaciones; búsqueda sin acentos, categorías, favoritos y ficha nutricional con procedencia.
+- Catálogo de 66 alimentos, incluidas torta de agua con todo el migajón y sin relleno, palomitas de maíz sin aceite o con aceite y piernas de pollo con distintas preparaciones; búsqueda sin acentos, categorías, favoritos y ficha nutricional con procedencia.
 - Alimentos personalizados desde etiquetas por 100 g. Los nutrientes desconocidos permanecen sin dato.
 - Total diario de energía, proteína, carbohidratos, grasa y otros 12 nutrientes. El sodio se muestra como límite, nunca como cantidad que falta consumir.
 - Meta gradual de pasos y registro manual, sin descontar calorías por actividad.
@@ -57,12 +65,14 @@ El SMAE se usa como **clasificación orientativa y contexto de equivalentes**, a
 
 La marca, variedad, preparación, cantidad de agua, aceite y sal pueden cambiar la composición. Hay alimentos crudos y cocidos separados. Para productos específicos se pueden ingresar los valores de su etiqueta. Una futura integración íntegra del SMAE requiere una fuente autorizada de la edición elegida y validar la correspondencia por alimento.
 
+La torta de agua se estima con la composición USDA de pan blanco tipo francés: no contamos con un análisis específico de esa receta. Se registra el peso completo del pan, incluido el migajón, sin relleno; esta limitación aparece en su preparación y en la documentación de fuentes.
+
 - [Procedencia del catálogo y generación reproducible](docs/NUTRITION-SOURCES.md).
 - [Ecuaciones, referencias y límites de los objetivos](docs/TARGETS.md).
 
 ## Almacenamiento y límites
 
-La clave local es `gymtrack.v1`. Cada navegador/origen/dispositivo mantiene sus datos por separado. No hay cuentas propias, sincronización, integración con Apple Health, lector de fotos ni módulo de entrenamiento. Exporta antes de cambiar de dirección o dispositivo, desinstalar o borrar datos del navegador.
+La clave local es `gymtrack.v1`. Cada navegador/origen/dispositivo y la app iOS mantienen sus datos por separado. No hay cuentas propias, sincronización, integración con Apple Health, lector de fotos ni módulo de entrenamiento. Exporta antes de cambiar de dirección o dispositivo, desinstalar o borrar datos del navegador.
 
 El objetivo mostrado es el **perfil actual**, también al consultar fechas anteriores; los alimentos históricos sí conservan su composición original. Las metas automáticas son estimaciones para adultos y se desactivan para ciertas situaciones que requieren atención individual. La aplicación permite continuar el diario.
 
@@ -84,6 +94,15 @@ npx playwright test
 
 La dependencia Playwright sólo se usa para desarrollo; la app no la descarga ni la necesita para funcionar. Los resultados y capturas quedan fuera del control de versiones en `test-results/`.
 
+Para preparar y verificar los recursos iOS desde Windows o Mac:
+
+```powershell
+npm ci
+npm run ios:sync
+```
+
+La verificación comprueba recursos locales, catálogo, plugins, privacidad e icono. Las pruebas del adaptador nativo simulan los plugins para comprobar exportación, cancelación y errores; no sustituyen una instalación en iPhone. La compilación final requiere macOS y Xcode 26+: GitHub Actions la ejecuta, o puedes usar `npm run ios:ipa` en una Mac.
+
 ## Estructura
 
 ```text
@@ -94,6 +113,9 @@ dist/             Aplicación lista para alojar
   storage.js      Persistencia y validación de respaldos
   sw.js           Recursos sin conexión
 scripts/          Servidor local e importador del catálogo
+native/           Entrada iOS y exportación mediante Archivos/Compartir
+ios/              Proyecto Xcode con Swift Package Manager
+.github/workflows/ Compilación manual del IPA en GitHub Actions
 tests/            Pruebas de dominio y navegador
 docs/             Fuentes, método y límites
 ```

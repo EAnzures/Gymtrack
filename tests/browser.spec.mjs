@@ -245,6 +245,44 @@ test('favorites persist and deleting foods or meals requires confirmation', asyn
   expect((await readState(page)).days[date].meals).toEqual([]);
 });
 
+test('native interface shares backups, reports cancellation and preserves the diary', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.nativeExports = [];
+    window.nativeExportResult = 'shared';
+    window.nativeWorkerCalls = 0;
+    navigator.serviceWorker.register = async () => { window.nativeWorkerCalls++; throw new Error('Native app must not register a worker'); };
+    window.GymTrackNative = { async exportBackup(text, name) {
+      window.nativeExports.push({ text, name });
+      if(window.nativeExportResult === 'error') throw new Error('No se pudo compartir el respaldo.');
+      return window.nativeExportResult;
+    }};
+  });
+  await page.reload();
+  await page.locator('#selected-date').fill(date);
+  await example(page);
+  const original = await rawState(page);
+  await page.locator('[data-view="goals"]').click();
+  await expect(page.locator('#main')).toContainText('Los registros se guardan en esta aplicación');
+  await expect(page.locator('#main [data-action="help"]')).toHaveText('Sobre la app');
+  await page.locator('#main [data-action="export"]').click();
+  await expect(page.locator('#toast')).toHaveText('Respaldo compartido.');
+  const exported = await page.evaluate(() => window.nativeExports[0]);
+  expect(JSON.parse(exported.text).days[date]).toEqual(JSON.parse(original).days[date]);
+  expect(exported.name).toMatch(/^gymtrack-respaldo-\d{4}-\d{2}-\d{2}\.json$/);
+  await page.evaluate(() => { window.nativeExportResult = 'cancelled'; });
+  await page.locator('#main [data-action="export"]').click();
+  await expect(page.locator('#toast')).toContainText('Exportación cancelada');
+  expect(await rawState(page)).toBe(original);
+  await page.evaluate(() => { window.nativeExportResult = 'error'; });
+  await page.locator('#main [data-action="export"]').click();
+  await expect(page.locator('#toast')).toContainText('No se pudo compartir');
+  expect(await rawState(page)).toBe(original);
+  await page.locator('#main [data-action="help"]').click();
+  await expect(page.locator('#modal')).toContainText('Guardar en Archivos');
+  await expect(page.locator('#modal')).not.toContainText('Agregar a Inicio');
+  expect(await page.evaluate(() => window.nativeWorkerCalls)).toBe(0);
+});
+
 test('diary, navigation and dialogs fit the viewport @layout', async ({ page }, testInfo) => {
   await createProfile(page);
   await example(page);

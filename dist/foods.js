@@ -424,6 +424,40 @@ export const FOODS = [
     }
   },
   {
+    "id": "torta-agua",
+    "name": "Torta de agua sin relleno (con migajón)",
+    "category": "Cereales",
+    "preparation": "Pan de agua: sólo pan horneado, corteza y todo el migajón, sin relleno. Estimación con pan blanco tipo francés USDA; la receta y la fortificación pueden variar",
+    "emoji": "🥖",
+    "source": {
+      "name": "USDA SR Legacy (2018)",
+      "url": "https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR-Legacy/SR-Leg_ASC.zip",
+      "code": "18029",
+      "description": "Bread, french or vienna (includes sourdough)"
+    },
+    "smaeGroup": "Cereales y tubérculos sin grasa",
+    "equivalentGrams": null,
+    "equivalentSource": null,
+    "per100": {
+      "kcal": 272.0,
+      "protein": 10.75,
+      "carbs": 51.88,
+      "fat": 2.42,
+      "fiber": 2.2,
+      "calcium": 52.0,
+      "iron": 3.91,
+      "magnesium": 32.0,
+      "potassium": 117.0,
+      "sodium": 602.0,
+      "zinc": 1.04,
+      "vitaminA": 0.0,
+      "vitaminC": 0.0,
+      "vitaminD": 0.0,
+      "vitaminB12": 0.0,
+      "folate": 170.0
+    }
+  },
+  {
     "id": "pasta-cocida",
     "name": "Pasta cocida",
     "category": "Cereales",

@@ -82,6 +82,9 @@ SELECTION = [
     ("08121", "avena-cocida", "Avena cocida en agua", "Cereales", "Sin enriquecer, sin sal; pesar ya cocida", "🥣", CEREAL),
     ("18075", "pan-integral", "Pan integral de caja", "Cereales", "Preparación comercial genérica", "🍞", CEREAL),
     ("18029", "pan-frances", "Pan blanco tipo francés", "Cereales", "Referencia genérica; no equivale a todas las recetas de bolillo", "🥖", CEREAL),
+    # Regional bread proxy: keep the complete bread, including crumb, with no filling.
+    # This is not a measured composition for Puebla's torta de agua recipe.
+    ("18029", "torta-agua", "Torta de agua sin relleno (con migajón)", "Cereales", "Pan de agua: sólo pan horneado, corteza y todo el migajón, sin relleno. Estimación con pan blanco tipo francés USDA; la receta y la fortificación pueden variar", "🥖", CEREAL),
     ("20421", "pasta-cocida", "Pasta cocida", "Cereales", "Sin enriquecer, sin sal ni salsa", "🍝", CEREAL),
     ("11367", "papa-cocida", "Papa cocida sin cáscara", "Cereales", "Hervida, sin sal ni aceite", "🥔", CEREAL),
     ("11510", "camote-cocido", "Camote cocido", "Cereales", "Hervido, sin cáscara", "🍠", CEREAL),

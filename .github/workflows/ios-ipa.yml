@@ -1,0 +1,72 @@
+name: Build iPhone IPA (AltStore)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-ipa-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: GymTrack for iPhone
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+      IOS_BUILD_NUMBER: ${{ github.run_number }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Test nutrition, storage and native preparation
+        run: npm test
+
+      - name: Prepare bundled app and synchronize iOS plugins
+        run: npm run ios:sync
+
+      - name: Compile device app and package unsigned IPA
+        run: node scripts/build-ios-ipa.mjs
+
+      - name: Upload IPA for AltStore
+        uses: actions/upload-artifact@v7
+        with:
+          name: GymTrack-iOS-AltStore
+          path: |
+            build/ios/GymTrack.ipa
+            build/ios/SHA256SUMS.txt
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
+      - name: Explain installation
+        shell: bash
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+          ## GymTrack listo para AltStore
+
+          Descarga **GymTrack-iOS-AltStore** en **Artifacts** y extrae el ZIP.
+          Guarda **GymTrack.ipa** en Archivos del iPhone e impórtalo desde
+          **AltStore Classic → My Apps → +**, con AltServer disponible.
+
+          Este IPA contiene una compilación para iPhone físico, sin firma.
+          AltStore lo firma con tu cuenta de Apple durante la instalación.
+          La compilación no utiliza credenciales ni certificados de Apple.
+
+          Instrucciones completas: `docs/IOS-INSTALL.md` en este repositorio.
+          SUMMARY
