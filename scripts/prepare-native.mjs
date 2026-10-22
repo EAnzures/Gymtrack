@@ -40,7 +40,7 @@ await build({
   bundle: true,
   format: 'esm',
   platform: 'browser',
-  target: 'safari15',
+  target: 'safari15.4',
   external: ['./app.js'],
   legalComments: 'linked',
 });

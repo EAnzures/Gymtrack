@@ -8,7 +8,7 @@ El proyecto iOS incluye el diario y el catálogo localmente. Para obtener el arc
 
 Instálalo desde **AltStore Classic → My Apps → +** con AltServer disponible en tu computadora. El IPA se compila sin firma y AltStore lo firma con tu cuenta de Apple. Descargarlo desde Safari por sí solo no lo instala. Con una cuenta gratuita debes renovar la firma cada 7 días. [Guía completa de compilación e instalación](docs/IOS-INSTALL.md).
 
-La app iOS requiere iOS 15 o posterior. Sus registros son independientes de Safari: usa **Exportar respaldo** e **Importar respaldo** para pasarlos. La exportación nativa abre el menú de compartir de iOS para elegir **Guardar en Archivos**. Las actualizaciones del sitio no actualizan el IPA automáticamente.
+La app iOS requiere **iOS 15.4 o posterior**: sus formularios utilizan diálogos incorporados en [WebKit desde Safari 15.4](https://webkit.org/blog/12445/new-webkit-features-in-safari-15-4/). Sus registros son independientes de Safari: usa **Exportar respaldo** e **Importar respaldo** para pasarlos. La exportación nativa abre el menú de compartir de iOS para elegir **Guardar en Archivos**. Las actualizaciones del sitio no actualizan el IPA automáticamente.
 
 ## Ejecutar en esta computadora
 

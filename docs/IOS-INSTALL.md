@@ -4,6 +4,8 @@ El proyecto iOS incluye GymTrack y su catálogo dentro de la aplicación. El dia
 
 El archivo producido está **sin firmar**: descargarlo o tocarlo en Safari no basta para instalarlo. La firma se realiza desde AltStore/AltServer, fuera de GitHub. Este proceso no utiliza contraseñas de Apple, certificados ni secretos de firma en el repositorio.
 
+GymTrack requiere **iOS 15.4 o posterior** porque sus formularios utilizan `dialog.showModal()`, disponible en [WebKit desde Safari 15.4](https://webkit.org/blog/12445/new-webkit-features-in-safari-15-4/).
+
 ## 1. Preparar tu repositorio en GitHub
 
 El repositorio elegido es [EAnzures/Gymtrack](https://github.com/EAnzures/Gymtrack). La raíz debe contener `package.json`, `package-lock.json`, `capacitor.config.json`, `dist/`, `ios/`, `scripts/`, `tests/` y **`.github/workflows/ios-ipa.yml`**. La carpeta `gymtrack` de esta computadora ya es la raíz del proyecto: no la coloques como una subcarpeta adicional dentro del repositorio.

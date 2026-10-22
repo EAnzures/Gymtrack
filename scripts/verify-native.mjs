@@ -175,7 +175,7 @@ export async function verifyNative(root = defaultRoot) {
   assert.ok(settings.length >= 2, 'Faltan las configuraciones Debug/Release de la aplicación.');
   for (const setting of settings) {
     assert.equal(unquote(setting.PRODUCT_BUNDLE_IDENTIFIER), appId, 'Xcode debe usar el identificador de GymTrack.');
-    assert.ok(Number(unquote(setting.IPHONEOS_DEPLOYMENT_TARGET)) >= 15, 'Capacitor 8 requiere iOS 15 o posterior.');
+    assert.ok(Number(unquote(setting.IPHONEOS_DEPLOYMENT_TARGET)) >= 15.4, 'GymTrack requiere iOS 15.4 o posterior para abrir sus formularios con dialog.showModal().');
   }
   const scheme = await readFile(path.join(root, 'ios/App/App.xcodeproj/xcshareddata/xcschemes/App.xcscheme'), 'utf8');
   const references = [...scheme.matchAll(/<BuildableReference\b[^>]*\bBlueprintIdentifier="([^"]+)"[^>]*>/g)];
